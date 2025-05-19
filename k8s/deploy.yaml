@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk033-my-app
+  namespace: skala-practice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sk033-my-app
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8081'
+        prometheus.io/path: '/actuator/prometheus'
+        update: 2a864618c29f32fe085b55269a7b136f
+      labels:
+        app: sk033-my-app
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: my-app
+        image: amdp-registry.skala-ai.com/skala25a/sk033-my-app:1.0.0
+        imagePullPolicy: Always
+        env:
+        - name: LOGGING_LEVEL
+          value: DEBUG
+        - name: USER_NAME
+          value: sk033
+        - name: NAMESPACE
+          value: skala-practice
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: SPRING_DATASOURCE_USERNAME
+        envFrom:
+        - secretRef:
+            name: my-app-secrets

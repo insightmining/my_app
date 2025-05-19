@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sk000-my-app-config
+  namespace: skala-practice
+data:
+  SPRING_DATASOURCE_URL: "jdbc:mariadb://a372be0564d58424b9f503dd696e766a-1897922469.ap-northeast-2.elb.amazonaws.com:3306/CLOUD?allowMultiQueries=true"
+  SPRING_DATASOURCE_DRIVER: "org.mariadb.jdbc.Driver"
+  SPRING_DATASOURCE_USERNAME: "cloud"

@@ -1,0 +1,8 @@
+- op: remove
+  path: /spec/template/metadata/annotations/prometheus.io~1path
+
+- op: remove
+  path: /spec/template/metadata/annotations/prometheus.io~1port
+
+- op: remove
+  path: /spec/template/metadata/annotations/prometheus.io~1scrape

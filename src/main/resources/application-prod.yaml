@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.mariadb.jdbc.Driver}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+#spring:
+#  datasource:
+#    url: jdbc:mariadb://a372be0564d58424b9f503dd696e766a-1897922469.ap-northeast-2.elb.amazonaws.com:3306/CLOUD?allowMultiQueries=true
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: cloud
+#    password: Skala25a!23$
+
+  jpa:
+    open-in-view: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: update  # 무조건 테블이 있으면 삭제후 생성은 create
+    show-sql: false
+
+logging:
+  level:
+    '[org.hibernate.SQL]': DEBUG
+    '[org.hibernate.type.descriptor.sql.BasicBinder]': TRACE

@@ -1,0 +1,6 @@
+admin,600,TechCorp:100:5|GreenEnergy:80:5
+skala,206800,TechCorp:100:200|GreenEnergy:80:80|HealthPlus:120:140
+himang10,195000,TechCorp:100:50
+skala2,1000000
+sksala20,100000
+spring-skala,1000000

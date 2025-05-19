@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: local # 기본 활성화 프로파일 설정
+
+management:
+  server:
+    port: 8081 # Actuator 포트 설정
+  endpoints:
+    web:
+      exposure:
+        include: "*" # Prometheus endpoint 노출
+  metrics:
+    enable:
+      all: true # 모든 기본 메트릭 활성화
+  endpoint:
+    prometheus:
+      enabled: true # Prometheus endpoint 활성화
+
+logging:
+  level:
+    '[org.hibernate.SQL]': DEBUG
+    '[org.hibernate.type.descriptor.sql.BasicBinder]': TRACE
+
+springdoc:
+  swagger-ui:
+    path: /swagger/swagger-ui # Swagger UI 접속 경로 변경
+  api-docs:
+    path: /swagger/swagger-docs

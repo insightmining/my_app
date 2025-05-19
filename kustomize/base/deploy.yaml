@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8081'
+        prometheus.io/path: '/actuator/prometheus'
+    spec:
+      containers:
+      - name: my-app
+        image: amdp-registry.skala-ai.com/skala25a/sk000-my-app:1.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        # ConfigMap에서 값 가져오기
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: SPRING_DATASOURCE_USERNAME
+        # Secret에서 값 가져오기
+        envFrom:
+        - secretRef:
+            name: my-app-secrets
