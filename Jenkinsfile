@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        GIT_URL = 'https://github.com/rde-devplace/devops-source.git'
+        GIT_URL = 'https://github.com/insightmining/my_app.git'
         GIT_BRANCH = 'main' // 또는 master
         GIT_ID = 'skala-github-id' // GitHub PAT credential ID
-        GIT_USER_NAME = 'himang10' // GitHub 사용자 이름
-        GIT_USER_EMAIL = 'himang10@gmail.com'
+        GIT_USER_NAME = 'insightmining' // GitHub 사용자 이름
+        GIT_USER_EMAIL = 'doeun2181@gmail.com'
         IMAGE_REGISTRY = 'amdp-registry.skala-ai.com/skala25a'
-        IMAGE_NAME = 'sk000-my-app'
-        IMAGE_TAG = '1.0.0'
+        IMAGE_NAME = 'sk033-my-app'
+        IMAGE_TAG = '2.0.0'
         DOCKER_CREDENTIAL_ID = 'skala-image-registry-id'  // Harbor 인증 정보 ID
     }
 
@@ -62,14 +62,14 @@ pipeline {
                     def gitRepoPath = env.GIT_URL.replaceFirst(/^https?:\/\//, '')
 
                     sh """
-                        sed -i 's|^[[:space:]]*image:.*\$|${newImageLine}|g' ./argocd-k8s/deploy.yaml
-                        cat ./argocd-k8s/deploy.yaml
+                        sed -i 's|^[[:space:]]*image:.*\$|${newImageLine}|g' ./k8s/deploy.yaml
+                        cat ./k8s/deploy.yaml
                     """
 
                     sh """
                         git config user.name "$GIT_USER_NAME"
                         git config user.email "$GIT_USER_EMAIL"
-                        git add ./argocd-k8s/deploy.yaml || true
+                        git add ./k8s/deploy.yaml || true
                     """
 
                     withCredentials([usernamePassword(credentialsId: "${env.GIT_ID}", usernameVariable: 'GIT_PUSH_USER', passwordVariable: 'GIT_PUSH_PASSWORD')]) {
