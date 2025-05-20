@@ -4,7 +4,7 @@ metadata:
   name: sk033-my-app
   namespace: skala-practice
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: sk033-my-app
@@ -19,6 +19,16 @@ spec:
         app: sk033-my-app
     spec:
       serviceAccountName: default
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - sk033-my-app
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: my-app
         image: amdp-registry.skala-ai.com/skala25a/sk033-my-app:2.0.0-1-84bd6f4517d5
@@ -45,3 +55,30 @@ spec:
         envFrom:
         - secretRef:
             name: my-app-secrets
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          failureThreshold: 2
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          failureThreshold: 2
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 8080
+          failureThreshold: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "500m"
